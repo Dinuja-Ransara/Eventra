@@ -182,3 +182,5 @@ Environment variables, contribution guidelines, and folder structure to be docum
 
 ## 11. License
 MIT (or your preferred license)
+ 
+ 
