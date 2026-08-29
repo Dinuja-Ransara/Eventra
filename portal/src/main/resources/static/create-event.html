@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Event — Eventara Organizer</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body,
+    html {
+      background-color: #0d1117 !important;
+      color: #fff !important;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .dash-shell {
+      display: flex;
+      min-height: 100vh;
+      background-color: #0d1117;
+    }
+
+    .dash-main {
+      flex: 1;
+      padding: 32px 40px;
+      overflow-y: auto;
+      box-sizing: border-box;
+      background-color: #0d1117;
+    }
+
+    /* Side-by-Side Layout for Form & Live Preview */
+    .create-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 30px;
+      max-width: 1100px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .create-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-container {
+      background: rgba(22, 27, 34, 0.85);
+      border: 1px solid #30363d;
+      border-radius: 16px;
+      padding: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #c9d1d9;
+      font-weight: 500;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .form-input:focus {
+      border-color: #58a6ff;
+    }
+
+    /* Ticket Tier Row Builder */
+    .tier-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .tier-row input {
+      flex: 1;
+    }
+
+    /* Live Preview Sticky Card */
+    .preview-sticky-wrap {
+      position: sticky;
+      top: 32px;
+    }
+
+    .preview-card-box {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .preview-thumb {
+      height: 170px;
+      background: #21262d;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .preview-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="dash-shell">
+    <!-- Left Sidebar Control Panel -->
+    <aside class="dash-sidebar" style="background: #161b22; border-right: 1px solid #30363d;">
+      <a href="index.html" class="logo">
+        <span class="bars"><span></span><span></span><span></span><span></span></span>
+        Eventara <span
+          style="font-size: 10px; background: var(--cyan); color: #0d1117; padding: 2px 6px; border-radius: 10px; margin-left: 6px;">HOST</span>
+      </a>
+      <nav class="dash-nav">
+        <a href="dashboard.html"><i data-lucide="layout-dashboard" style="width:17px;height:17px"></i> Overview</a>
+        <a href="organizer-events.html"><i data-lucide="calendar" style="width:17px;height:17px"></i> My Events</a>
+        <a href="create-event.html" class="active"><i data-lucide="plus-circle" style="width:17px;height:17px"></i>
+          Create Event</a>
+        <a href="organizer-orders.html"><i data-lucide="ticket" style="width:17px;height:17px"></i> Orders</a>
+        <a href="organizer-attendees.html"><i data-lucide="users" style="width:17px;height:17px"></i> Attendees</a>
+        <span class="section-label">Account</span>
+        <a href="#" id="logout-link"><i data-lucide="log-out" style="width:17px;height:17px"></i> Sign out</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="dash-main">
+      <div class="create-layout">
+
+        <!-- Form Section -->
+        <div class="form-container">
+          <div style="margin-bottom: 24px;">
+            <h1 style="margin: 0; font-size: 22px; color: #fff;">🎉 Publish New Event</h1>
+            <p style="color: #8b949e; font-size: 13px; margin-top: 4px;">Fill out event details to submit for admin
+              review.</p>
+          </div>
+
+          <form id="create-event-form" onsubmit="handlePublishEvent(event)">
+            <div class="form-group">
+              <label>Event Title</label>
+              <input type="text" id="event-title" class="form-input"
+                placeholder="e.g., Aluth Kalawak — New Year Music Fest" oninput="updatePreview()" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label>Category</label>
+                <select id="event-category" class="form-input" oninput="updatePreview()">
+                  <option value="Music">Music</option>
+                  <option value="Tech">Tech</option>
+                  <option value="Food">Food</option>
+                  <option value="Art">Art</option>
+                  <option value="Business">Business</option>
+                  <option value="Sports">Sports</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Event Date</label>
+                <input type="text" id="event-date" class="form-input" placeholder="e.g., 2026-10-12"
+                  oninput="updatePreview()" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Venue / Location</label>
+              <input type="text" id="event-venue" class="form-input" placeholder="e.g., Colombo"
+                oninput="updatePreview()" required>
+            </div>
+
+            <!-- Dynamic Ticket Tiers Builder -->
+            <div class="form-group">
+              <label>Ticket Tiers & Pricing (LKR)</label>
+              <div id="ticket-tiers-container">
+                <div class="tier-row">
+                  <input type="text" class="form-input tier-name" placeholder="Tier Name (e.g., General)"
+                    value="General" oninput="updatePreview()">
+                  <input type="text" class="form-input tier-price" placeholder="Price (e.g., 2000)" value="2000"
+                    oninput="updatePreview()">
+                  <button type="button" class="btn btn-ghost"
+                    style="padding: 10px; color: #f43f5e; border-color: rgba(244,63,94,0.3);"
+                    onclick="removeTierRow(this)">✕</button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-ghost btn-sm"
+                style="margin-top: 8px; border-style: dashed; width: 100%;" onclick="addTierRow()">
+                + Add Another Ticket Tier
+              </button>
+            </div>
+
+            <div class="form-group">
+              <label>Event Cover Image</label>
+              <input type="file" id="event-image-input" class="form-input" accept="image/*" style="padding: 9px;"
+                onchange="previewImage(event)">
+            </div>
+
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="event-desc" class="form-input" rows="4"
+                placeholder="Describe what attendees can expect..."></textarea>
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn btn-primary"
+              style="width: 100%; justify-content: center; padding: 12px; background: linear-gradient(90deg, #9333ea, #db2777); border: none; border-radius: 8px; font-weight: 600; cursor: pointer; color: #fff;">
+              Publish Event
+            </button>
+          </form>
+        </div>
+
+        <!-- Live Preview Card Section -->
+        <div class="preview-sticky-wrap">
+          <div
+            style="font-size: 12px; font-weight: 700; color: #8b949e; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.05em;">
+            Live Card Preview</div>
+          <div class="preview-card-box">
+            <div class="preview-thumb">
+              <img id="preview-img" src="aluth-kalawak-poster.jpg" alt="Preview"
+                onerror="this.src='aluth-kalawak-poster.jpg'">
+            </div>
+            <div style="padding: 16px;">
+              <span id="preview-cat"
+                style="font-size: 10px; background: rgba(56,189,248,0.1); color: #38bdf8; padding: 2px 8px; border-radius: 10px; font-weight: 600; text-transform: uppercase;">Music</span>
+              <h3 id="preview-title" style="margin: 8px 0 4px 0; font-size: 16px; color: #fff;">Aluth Kalawak</h3>
+              <p id="preview-meta" style="margin: 0; font-size: 12px; color: #8b949e;">📅 2026-10-12 · 📍 Colombo</p>
+              <div
+                style="margin-top: 14px; background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 8px 12px;">
+                <div style="font-size: 10px; color: #8b949e; text-transform: uppercase; margin-bottom: 2px;">Tickets
+                </div>
+                <div id="preview-price" style="font-size: 12px; color: #fff; font-weight: 600;">General: LKR 2,000</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const logoutLink = document.getElementById("logout-link");
+      if (logoutLink) {
+        logoutLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          sessionStorage.clear();
+          window.location.href = "index.html";
+        });
+      }
+      updatePreview();
+    });
+
+    // Dynamic Ticket Tier Builder Functions
+    function addTierRow() {
+      const container = document.getElementById("ticket-tiers-container");
+      const div = document.createElement("div");
+      div.className = "tier-row";
+      div.innerHTML = `
+        <input type="text" class="form-input tier-name" placeholder="Tier Name (e.g., VIP)" oninput="updatePreview()">
+        <input type="text" class="form-input tier-price" placeholder="Price (e.g., 5000)" oninput="updatePreview()">
+        <button type="button" class="btn btn-ghost" style="padding: 10px; color: #f43f5e; border-color: rgba(244,63,94,0.3);" onclick="removeTierRow(this)">✕</button>
+      `;
+      container.appendChild(div);
+      updatePreview();
+    }
+
+    function removeTierRow(btn) {
+      const rows = document.querySelectorAll(".tier-row");
+      if (rows.length > 1) {
+        btn.parentElement.remove();
+        updatePreview();
+      } else {
+        alert("You must keep at least one ticket tier.");
+      }
+    }
+
+    // Live Preview Update Logic
+    function updatePreview() {
+      const title = document.getElementById("event-title").value || "Aluth Kalawak";
+      const category = document.getElementById("event-category").value || "Music";
+      const date = document.getElementById("event-date").value || "2026-10-12";
+      const venue = document.getElementById("event-venue").value || "Colombo";
+
+      // Gather all ticket tiers dynamically
+      const tierRows = document.querySelectorAll(".tier-row");
+      let tierStrings = [];
+      tierRows.forEach(row => {
+        const name = row.querySelector(".tier-name").value.trim();
+        const price = row.querySelector(".tier-price").value.trim();
+        if (name && price) {
+          tierStrings.push(`${name}: LKR ${price}`);
+        }
+      });
+
+      const formattedTickets = tierStrings.length > 0 ? tierStrings.join(" | ") : "General: LKR 2,000";
+
+      document.getElementById("preview-title").innerText = title;
+      document.getElementById("preview-cat").innerText = category;
+      document.getElementById("preview-meta").innerText = `📅 ${date} · 📍 ${venue}`;
+      document.getElementById("preview-price").innerText = formattedTickets;
+    }
+
+    function previewImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById("preview-img").src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    async function handlePublishEvent(event) {
+      event.preventDefault();
+      const submitBtn = document.getElementById("submit-btn");
+      submitBtn.innerText = "Publishing Event...";
+      submitBtn.disabled = true;
+
+      const fileInput = document.getElementById("event-image-input");
+      let imagePath = "aluth-kalawak-poster.jpg"; // fallback default
+
+      // 1. Upload Image First if selected
+      if (fileInput && fileInput.files.length > 0) {
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+
+        try {
+          const uploadRes = await fetch('/api/events/upload-image', {
+            method: 'POST',
+            body: formData
+          });
+
+          if (uploadRes.ok) {
+            const uploadData = await uploadRes.json();
+            imagePath = uploadData.imagePath;
+          } else {
+            console.warn("Image upload endpoint returned error, using fallback image.");
+          }
+        } catch (err) {
+          console.error("Image upload connection error:", err);
+        }
+      }
+
+      // 2. Gather Form Inputs & Ticket Tiers
+      const title = document.getElementById("event-title").value;
+      const description = document.getElementById("event-desc").value;
+      const category = document.getElementById("event-category").value;
+      const venue = document.getElementById("event-venue").value;
+      const eventDate = document.getElementById("event-date").value;
+      const organizerEmail = sessionStorage.getItem("userEmail") || "org@eventara.com";
+
+      const tierRows = document.querySelectorAll(".tier-row");
+      let tierStrings = [];
+      tierRows.forEach(row => {
+        const name = row.querySelector(".tier-name").value.trim();
+        const price = row.querySelector(".tier-price").value.trim();
+        if (name && price) {
+          tierStrings.push(`${name}: LKR ${price}`);
+        }
+      });
+      const ticketInfo = tierStrings.length > 0 ? tierStrings.join(" | ") : "General: LKR 2,000";
+
+      const eventPayload = {
+        title,
+        description,
+        imagePath,
+        category,
+        venue,
+        eventDate,
+        ticketInfo,
+        organizerEmail,
+        status: "PENDING"
+      };
+
+      // 3. Submit Event Payload to Database
+      try {
+        const res = await fetch('/api/events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(eventPayload)
+        });
+
+        if (res.ok) {
+          alert("Event published successfully! Awaiting admin approval.");
+          window.location.href = "dashboard.html";
+        } else {
+          alert("Failed to save event to database.");
+          submitBtn.innerText = "Publish Event";
+          submitBtn.disabled = false;
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Server connection error while publishing event.");
+        submitBtn.innerText = "Publish Event";
+        submitBtn.disabled = false;
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing — Eventara Organizer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="dash-shell">
+        <aside class="dash-sidebar">
+            <a href="index.html" class="logo"><span
+                    class="bars"><span></span><span></span><span></span><span></span></span>Eventara</a>
+            <nav class="dash-nav">
+                <a href="dashboard.html"><i data-lucide="layout-dashboard" style="width:17px;height:17px"></i>
+                    Overview</a>
+                <a href="organizer-events.html"><i data-lucide="calendar" style="width:17px;height:17px"></i> My
+                    Events</a>
+                <a href="create-event.html"><i data-lucide="plus-circle" style="width:17px;height:17px"></i> Create
+                    Event</a>
+                <a href="organizer-orders.html"><i data-lucide="ticket" style="width:17px;height:17px"></i> Orders</a>
+                <a href="organizer-attendees.html"><i data-lucide="users" style="width:17px;height:17px"></i>
+                    Attendees</a>
+                <span class="section-label">Grow</span>
+                <a href="organizer-marketing.html" class="active"><i data-lucide="megaphone"
+                        style="width:17px;height:17px"></i> Marketing</a>
+                <a href="organizer-sponsors.html"><i data-lucide="handshake" style="width:17px;height:17px"></i>
+                    Sponsors</a>
+                <span class="section-label">Account</span>
+                <a href="organizer-settings.html"><i data-lucide="settings" style="width:17px;height:17px"></i>
+                    Settings</a>
+                <a href="index.html"><i data-lucide="log-out" style="width:17px;height:17px"></i> Sign out</a>
+            </nav>
+        </aside>
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div>
+                    <h1>Marketing &amp; Promos 📣</h1>
+                    <p style="color:var(--text-dim);font-size:14px;margin-top:4px">Create discount codes and launch
+                        promotional campaigns.</p>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="alert('Promo code created successfully!')"><i
+                        data-lucide="plus" style="width:14px;height:14px"></i> Create Promo Code</button>
+            </div>
+            <div class="glass panel" style="width:100%; max-width:600px;">
+                <div class="panel-head">
+                    <h3>Active Discount Codes</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Discount</th>
+                            <th>Redemptions</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>EARLYBIRD20</b></td>
+                            <td>20% OFF</td>
+                            <td>45 / 100</td>
+                            <td><span style="color:var(--lime)">Active</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

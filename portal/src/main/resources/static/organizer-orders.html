@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders — Eventara Organizer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="dash-shell">
+        <aside class="dash-sidebar">
+            <a href="index.html" class="logo"><span
+                    class="bars"><span></span><span></span><span></span><span></span></span>Eventara</a>
+            <nav class="dash-nav">
+                <a href="dashboard.html"><i data-lucide="layout-dashboard" style="width:17px;height:17px"></i>
+                    Overview</a>
+                <a href="organizer-events.html"><i data-lucide="calendar" style="width:17px;height:17px"></i> My
+                    Events</a>
+                <a href="create-event.html"><i data-lucide="plus-circle" style="width:17px;height:17px"></i> Create
+                    Event</a>
+                <a href="organizer-orders.html" class="active"><i data-lucide="ticket"
+                        style="width:17px;height:17px"></i> Orders</a>
+                <a href="organizer-attendees.html"><i data-lucide="users" style="width:17px;height:17px"></i>
+                    Attendees</a>
+                <span class="section-label">Grow</span>
+                <a href="organizer-marketing.html"><i data-lucide="megaphone" style="width:17px;height:17px"></i>
+                    Marketing</a>
+                <a href="organizer-sponsors.html"><i data-lucide="handshake" style="width:17px;height:17px"></i>
+                    Sponsors</a>
+                <span class="section-label">Account</span>
+                <a href="organizer-settings.html"><i data-lucide="settings" style="width:17px;height:17px"></i>
+                    Settings</a>
+                <a href="index.html"><i data-lucide="log-out" style="width:17px;height:17px"></i> Sign out</a>
+            </nav>
+        </aside>
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div>
+                    <h1>Ticket Orders 🎟️</h1>
+                    <p style="color:var(--text-dim);font-size:14px;margin-top:4px">Review incoming bookings and payment
+                        statuses.</p>
+                </div>
+                <button class="btn btn-ghost btn-sm" onclick="alert('Exporting orders CSV...')"><i
+                        data-lucide="download" style="width:14px;height:14px"></i> Export CSV</button>
+            </div>
+            <div class="glass panel" style="width:100%;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Event</th>
+                            <th>Buyer Email</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#ORD-9421</td>
+                            <td>Aluth Kalawak</td>
+                            <td>user@eventara.com</td>
+                            <td>Rs. 2,500</td>
+                            <td><span style="color:var(--lime)">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-9420</td>
+                            <td>Nada Gama</td>
+                            <td>buyer2@gmail.com</td>
+                            <td>Rs. 1,800</td>
+                            <td><span style="color:var(--lime)">Completed</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

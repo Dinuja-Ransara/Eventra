@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendees — Eventara Organizer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="dash-shell">
+        <aside class="dash-sidebar">
+            <a href="index.html" class="logo"><span
+                    class="bars"><span></span><span></span><span></span><span></span></span>Eventara</a>
+            <nav class="dash-nav">
+                <a href="dashboard.html"><i data-lucide="layout-dashboard" style="width:17px;height:17px"></i>
+                    Overview</a>
+                <a href="organizer-events.html"><i data-lucide="calendar" style="width:17px;height:17px"></i> My
+                    Events</a>
+                <a href="create-event.html"><i data-lucide="plus-circle" style="width:17px;height:17px"></i> Create
+                    Event</a>
+                <a href="organizer-orders.html"><i data-lucide="ticket" style="width:17px;height:17px"></i> Orders</a>
+                <a href="organizer-attendees.html" class="active"><i data-lucide="users"
+                        style="width:17px;height:17px"></i> Attendees</a>
+                <span class="section-label">Grow</span>
+                <a href="organizer-marketing.html"><i data-lucide="megaphone" style="width:17px;height:17px"></i>
+                    Marketing</a>
+                <a href="organizer-sponsors.html"><i data-lucide="handshake" style="width:17px;height:17px"></i>
+                    Sponsors</a>
+                <span class="section-label">Account</span>
+                <a href="organizer-settings.html"><i data-lucide="settings" style="width:17px;height:17px"></i>
+                    Settings</a>
+                <a href="index.html"><i data-lucide="log-out" style="width:17px;height:17px"></i> Sign out</a>
+            </nav>
+        </aside>
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div>
+                    <h1>Attendee Check-in 👥</h1>
+                    <p style="color:var(--text-dim);font-size:14px;margin-top:4px">Verify tickets and manage guest entry
+                        logs.</p>
+                </div>
+                <button class="btn btn-primary btn-sm"
+                    onclick="alert('Camera scanner initialized for ticket check-in.')"><i data-lucide="qr-code"
+                        style="width:14px;height:14px"></i> Open QR Scanner</button>
+            </div>
+            <div class="glass panel" style="width:100%;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Attendee Name</th>
+                            <th>Email</th>
+                            <th>Ticket Code</th>
+                            <th>Checked In</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Standard Attendee</td>
+                            <td>user@eventara.com</td>
+                            <td>EVT-8921-LK</td>
+                            <td><span style="color:var(--lime)">Yes (7:42 PM)</span></td>
+                        </tr>
+                        <tr>
+                            <td>Kasun Perera</td>
+                            <td>kasun@gmail.com</td>
+                            <td>EVT-8922-LK</td>
+                            <td><span style="color:var(--text-dim)">Pending</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

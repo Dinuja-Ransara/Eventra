@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendee Dashboard — Eventara</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body,
+        html {
+            background-color: #0d1117 !important;
+            color: #fff !important;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .dash-shell {
+            display: flex;
+            min-height: 100vh;
+            background-color: #0d1117;
+        }
+
+        .dash-main {
+            flex: 1;
+            padding: 32px 40px;
+            overflow-y: auto;
+            box-sizing: border-box;
+            background-color: #0d1117;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-card {
+            animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        /* Empty State Styling */
+        .empty-state-card {
+            background: rgba(22, 27, 34, 0.6);
+            border: 1px dashed #30363d;
+            border-radius: 16px;
+            padding: 60px 20px;
+            text-align: center;
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        .empty-icon-wrap {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.1);
+            color: #a855f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+        }
+
+        /* Modern Ticket Pass Card Grid */
+        .tickets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .ticket-pass {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .ticket-pass:hover {
+            transform: translateY(-3px);
+            border-color: #58a6ff;
+        }
+
+        .ticket-thumb {
+            height: 140px;
+            background: #21262d;
+            position: relative;
+        }
+
+        .ticket-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Event Cards Grid for In-Dashboard Discovery */
+        .events-grid-inline {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .event-card-item {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Modal Overlay */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 30px;
+            width: 340px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dash-shell">
+        <!-- Sidebar Navigation -->
+        <aside class="dash-sidebar" style="background: #161b22; border-right: 1px solid #30363d;">
+            <a href="index.html" class="logo">
+                <span class="bars"><span></span><span></span><span></span><span></span></span>
+                Eventara <span
+                    style="font-size: 10px; background: #34d399; color: #0d1117; padding: 2px 6px; border-radius: 10px; margin-left: 6px;">ATTENDEE</span>
+            </a>
+            <nav class="dash-nav">
+                <a href="#" id="nav-tickets-tab" onclick="switchTab('tickets', this)" class="active"><i
+                        data-lucide="ticket" style="width:17px;height:17px"></i> My Tickets</a>
+                <a href="#" id="nav-discover-tab" onclick="switchTab('discover', this)"><i data-lucide="compass"
+                        style="width:17px;height:17px"></i> Discover Events</a>
+                <a href="#" onclick="alert('Saved events feature coming soon!')"><i data-lucide="heart"
+                        style="width:17px;height:17px"></i> Saved Events</a>
+                <span class="section-label">Account</span>
+                <a href="index.html" style="color: #38bdf8;"><i data-lucide="home" style="width:17px;height:17px"></i>
+                    Public Portal</a>
+                <a href="#" id="logout-link"><i data-lucide="log-out" style="width:17px;height:17px"></i> Sign out</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="dash-main">
+
+            <!-- Dynamic Header Section -->
+            <div class="animate-card"
+                style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1 id="page-title" style="margin: 0; font-size: 24px; color: #fff;">My Booked Tickets 🎟️</h1>
+                    <p id="page-subtitle" style="color: #8b949e; font-size: 13px; margin-top: 4px;">Access your entry
+                        passes and QR codes for upcoming events.</p>
+                </div>
+                <button id="top-action-btn" onclick="switchTab('discover', document.getElementById('nav-discover-tab'))"
+                    class="btn btn-primary btn-sm"
+                    style="background: var(--pink); border: none; border-radius: 20px;">Explore Events</button>
+            </div>
+
+            <!-- Dynamic View Container -->
+            <div id="main-content-container" class="animate-card" style="width: 100%;">
+                <!-- Rendered via JS -->
+            </div>
+
+        </main>
+    </div>
+
+    <!-- QR Code Modal Popup -->
+    <div id="qr-modal" class="modal-backdrop" onclick="closeQrModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h3 style="margin-top:0; color:#fff;">Event Entry Pass</h3>
+            <p id="modal-event-title" style="font-size: 14px; color: #38bdf8; font-weight: 600; margin-bottom: 10px;">
+            </p>
+            <div style="background: #fff; padding: 15px; border-radius: 12px; display: inline-block; margin: 10px 0;">
+                <!-- Simulated QR Code graphic using placeholder or vector -->
+                <div style="font-size: 64px; line-height: 1;">📱</div>
+            </div>
+            <div id="modal-ticket-code"
+                style="font-family: monospace; font-size: 16px; color: #a855f7; font-weight: 700; margin: 10px 0;">
+            </div>
+            <p id="modal-ticket-tier" style="font-size: 12px; color: #8b949e; margin-bottom: 20px;"></p>
+            <button onclick="closeQrModal()" class="btn btn-primary btn-sm"
+                style="width: 100%; background: #30363d; border: none; padding: 10px; border-radius: 8px; color: #fff; cursor: pointer;">Close
+                Pass</button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            switchTab('tickets', document.getElementById('nav-tickets-tab'));
+
+            const logoutLink = document.getElementById("logout-link");
+            if (logoutLink) {
+                logoutLink.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    sessionStorage.clear();
+                    window.location.href = "index.html";
+                });
+            }
+        });
+
+        function switchTab(tabName, el) {
+            document.querySelectorAll('.dash-nav a').forEach(a => a.classList.remove('active'));
+            if (el) el.classList.add('active');
+
+            const titleEl = document.getElementById("page-title");
+            const subtitleEl = document.getElementById("page-subtitle");
+            const topBtn = document.getElementById("top-action-btn");
+
+            if (tabName === 'tickets') {
+                titleEl.innerText = "My Booked Tickets 🎟️";
+                subtitleEl.innerText = "Access your entry passes and QR codes for upcoming events.";
+                topBtn.innerText = "Explore Events";
+                topBtn.setAttribute("onclick", "switchTab('discover', document.getElementById('nav-discover-tab'))");
+                loadUserTickets();
+            } else if (tabName === 'discover') {
+                titleEl.innerText = "Discover Trendy Events 🌟";
+                subtitleEl.innerText = "Browse and book tickets for live concerts, workshops, and meetups.";
+                topBtn.innerText = "My Tickets";
+                topBtn.setAttribute("onclick", "switchTab('tickets', document.getElementById('nav-tickets-tab'))");
+                loadDiscoverEvents();
+            }
+        }
+
+        async function loadUserTickets() {
+            const container = document.getElementById("main-content-container");
+            const userBookings = JSON.parse(sessionStorage.getItem("userBookings") || "[]");
+
+            if (userBookings.length === 0) {
+                container.innerHTML = `
+          <div class="empty-state-card">
+            <div class="empty-icon-wrap">
+              <i data-lucide="ticket-x" style="width: 32px; height: 32px;"></i>
+            </div>
+            <h3 style="margin: 0 0 8px 0; font-size: 18px; color: #fff;">No tickets booked yet</h3>
+            <p style="color: #8b949e; font-size: 13px; margin: 0 0 20px 0; max-width: 380px; margin-left: auto; margin-right: auto;">
+              You haven't secured any passes for upcoming concerts or festivals yet. Discover what's happening around Sri Lanka!
+            </p>
+            <button onclick="switchTab('discover', document.getElementById('nav-discover-tab'))" class="btn btn-primary btn-sm" style="background: linear-gradient(90deg, #9333ea, #db2777); border: none; padding: 10px 24px; border-radius: 20px; font-weight: 600; cursor: pointer; color: #fff;">
+              Browse Trendy Events
+            </button>
+          </div>
+        `;
+                lucide.createIcons();
+                return;
+            }
+
+            // Fetch live events to match image paths if available
+            let allEvents = [];
+            try {
+                const res = await fetch('/api/events');
+                if (res.ok) allEvents = await res.json();
+            } catch (err) {
+                console.error("Could not fetch event images", err);
+            }
+
+            let html = '<div class="tickets-grid">';
+            userBookings.forEach((ticket, idx) => {
+                // Find matching event for cover image
+                const matchedEvent = allEvents.find(e => e.id == ticket.eventId);
+                const imgSrc = matchedEvent && matchedEvent.imagePath ? `sources/${matchedEvent.imagePath}` : 'aluth-kalawak-poster.jpg';
+                const tierName = ticket.tier || 'General Access';
+
+                html += `
+          <div class="ticket-pass">
+            <div class="ticket-thumb">
+              <img src="${imgSrc}" alt="${ticket.eventTitle}" onerror="this.src='aluth-kalawak-poster.jpg'">
+              <span style="position: absolute; top: 10px; right: 10px; background: rgba(147,51,234,0.9); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 8px; text-transform: uppercase;">${tierName}</span>
+            </div>
+            <div style="padding: 18px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+              <div>
+                <h3 style="margin: 0 0 6px 0; font-size: 18px; color: #fff;">${ticket.eventTitle}</h3>
+                <p style="margin: 0 0 14px 0; font-size: 12px; color: #8b949e;">📅 ${ticket.date || 'TBA'} · 📍 ${ticket.venue || 'TBA'}</p>
+              </div>
+              <div style="border-top: 1px solid #30363d; padding-top: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 10px; color: #8b949e; text-transform: uppercase;">Pass Code</div>
+                  <div style="font-size: 13px; color: #38bdf8; font-family: monospace; font-weight: 600;">${ticket.code}</div>
+                </div>
+                <button onclick="openQrModal('${ticket.eventTitle.replace(/'/g, "\\'")}', '${ticket.code}', '${tierName}')" class="btn btn-sm" style="background: linear-gradient(90deg, #9333ea, #db2777); color: #fff; border: none; border-radius: 20px; padding: 6px 14px; font-size: 12px; cursor: pointer; font-weight: 600;">
+                  View QR Pass
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+            });
+            html += '</div>';
+
+            container.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function openQrModal(title, code, tier) {
+            document.getElementById("modal-event-title").innerText = title;
+            document.getElementById("modal-ticket-code").innerText = code;
+            document.getElementById("modal-ticket-tier").innerText = `Package Tier: ${tier}`;
+            document.getElementById("qr-modal").style.display = "flex";
+        }
+
+        function closeQrModal(e) {
+            document.getElementById("qr-modal").style.display = "none";
+        }
+
+        async function loadDiscoverEvents() {
+            const container = document.getElementById("main-content-container");
+            container.innerHTML = '<div style="text-align:center; padding: 40px; color: #8b949e;">Loading available events...</div>';
+
+            try {
+                const res = await fetch('/api/events');
+                const events = res.ok ? await res.json() : [];
+                const approvedEvents = events.filter(e => e.status === 'APPROVED');
+
+                if (approvedEvents.length === 0) {
+                    container.innerHTML = '<div style="text-align:center; padding: 40px; color: #8b949e;">No approved events currently available. Check back soon!</div>';
+                    return;
+                }
+
+                let gridHtml = '<div class="events-grid-inline">';
+                approvedEvents.forEach(ev => {
+                    const imgSrc = ev.imagePath ? `sources/${ev.imagePath}` : 'aluth-kalawak-poster.jpg';
+                    const displayTicketInfo = ev.ticketInfo || 'General: LKR 2,000';
+
+                    gridHtml += `
+            <div class="event-card-item">
+              <div style="height: 180px; overflow: hidden; background: #21262d;">
+                <img src="${imgSrc}" alt="${ev.title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='aluth-kalawak-poster.jpg'">
+              </div>
+              <div style="padding: 16px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <span style="font-size: 10px; background: rgba(56,189,248,0.1); color: #38bdf8; padding: 2px 8px; border-radius: 10px; font-weight: 600; text-transform: uppercase;">${ev.category || 'General'}</span>
+                  <h3 style="margin: 8px 0 4px 0; font-size: 16px; color: #fff;">${ev.title}</h3>
+                  <p style="margin: 0; font-size: 12px; color: #8b949e;">📅 ${ev.eventDate || 'TBA'} · 📍 ${ev.venue || 'TBA'}</p>
+                </div>
+                <div style="margin-top: 14px; background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 8px 12px;">
+                  <div style="font-size: 10px; color: #8b949e; text-transform: uppercase; margin-bottom: 2px;">Tickets</div>
+                  <div style="font-size: 12px; color: #fff; font-weight: 600;">${displayTicketInfo}</div>
+                </div>
+                <div style="margin-top: 14px;">
+                  <a href="event-details.html?id=${ev.id}" class="btn btn-primary btn-sm" style="display: block; text-align: center; background: linear-gradient(90deg, #9333ea, #db2777); color: #fff; text-decoration: none; border-radius: 20px; padding: 8px; font-weight: 600; font-size: 14px;">
+                    Get Tickets
+                  </a>
+                </div>
+              </div>
+            </div>
+          `;
+                });
+                gridHtml += '</div>';
+                container.innerHTML = gridHtml;
+                lucide.createIcons();
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--pink);">Failed to load events from server.</div>';
+            }
+        }
+    </script>
+</body>
+
+</html>

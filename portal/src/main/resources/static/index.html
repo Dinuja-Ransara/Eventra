@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eventara — Feel Every Event</title>
+  <meta name="description"
+    content="Discover, create, and manage unforgettable events — from music festivals to conferences.">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    .gh-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 50px;
+      width: 240px;
+      background-color: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      color: #c9d1d9;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    .gh-dropdown.show {
+      display: block;
+    }
+
+    .gh-dropdown-header {
+      padding: 12px 16px;
+    }
+
+    .gh-dropdown hr {
+      border: none;
+      border-top: 1px solid #30363d;
+      margin: 8px 0;
+    }
+
+    .gh-dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      color: #c9d1d9;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .gh-dropdown a:hover {
+      background-color: #161b22;
+      color: #58a6ff;
+    }
+
+    /* Grid styling for dynamic events */
+    .events-grid-dynamic {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    /* Horizontal scroll for Live section */
+    .live-scroll-dynamic {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+    }
+
+    .live-scroll-dynamic::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .live-scroll-dynamic::-webkit-scrollbar-thumb {
+      background: #30363d;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <span class="bars"><span></span><span></span><span></span><span></span></span>
+        Eventara
+      </a>
+      <div class="nav-links" style="display:none;"></div>
+
+      <div class="nav-actions">
+        <button class="btn-icon" id="cmdk-btn" title="Search (⌘K)"><i data-lucide="search"
+            style="width:17px;height:17px"></i></button>
+
+        <!-- Log in button (Shown when logged out) -->
+        <a href="login.html" id="nav-login-btn" class="btn btn-ghost btn-sm">Log in</a>
+
+        <!-- Profile Menu (Shown when logged in) -->
+        <div id="user-profile-menu" style="display: none; position: relative;">
+          <button id="avatar-btn"
+            style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;">
+            <img id="nav-avatar-img" src="" alt="Avatar"
+              style="width: 34px; height: 34px; border-radius: 50%; border: 1px solid #444;">
+          </button>
+
+          <!-- Dropdown Content -->
+          <div id="dropdown-content" class="gh-dropdown">
+            <div class="gh-dropdown-header">
+              <strong id="dropdown-name">User</strong><br>
+              <span id="dropdown-role" style="color: #8b949e; font-size: 12px;">Role</span>
+            </div>
+            <hr>
+            <a href="#" id="dynamic-dashboard-link">
+              <i data-lucide="layout-dashboard" style="width:16px; height:16px;"></i> Dashboard
+            </a>
+            <a href="user-profile.html">
+              <i data-lucide="user" style="width:16px; height:16px;"></i> Profile
+            </a>
+            <hr>
+            <a href="#" id="logout-btn">
+              <i data-lucide="log-out" style="width:16px; height:16px;"></i> Sign out
+            </a>
+          </div>
+        </div>
+
+        <a href="login.html" id="nav-action-btn" class="btn btn-primary btn-sm"><i data-lucide="plus"
+            style="width:15px;height:15px"></i>
+          Create Event</a>
+      </div>
+      <button class="burger"><i data-lucide="menu"></i></button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container hero-grid">
+      <div>
+        <h1 style="margin-top:18px">Feel every <span class="text-gradient">beat,</span><br>find every moment.</h1>
+        <p class="lead">From Aluth Kalawak to weekday tech meetups — Eventara is where Sri Lanka discovers, books, and
+          shows up for what matters. Real-time tickets, zero hassle.</p>
+
+        <form class="search-bar" id="hero-search" onsubmit="return false;">
+          <i data-lucide="search" style="width:18px;height:18px;color:var(--text-faint)"></i>
+          <input type="text" id="hero-search-input" placeholder="Search events, artists, venues...">
+          <button type="submit" class="btn btn-primary btn-sm">Search</button>
+        </form>
+
+        <div class="hero-actions" style="margin-top:28px">
+          <a href="#discover" class="btn btn-ghost">Browse events <i data-lucide="arrow-right"
+              style="width:15px;height:15px"></i></a>
+          <a href="login.html" class="btn btn-outline">Host an event</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat"><b id="stat-events">0</b><span>Live events</span></div>
+          <div class="stat"><b id="stat-attendees">0</b><span>Tickets sold</span></div>
+          <div class="stat"><b id="stat-organizers">0</b><span>Organizers</span></div>
+        </div>
+      </div>
+
+      <!-- Poster Image -->
+      <div class="eq-visual hero-poster-card" data-reveal="scale">
+        <span class="eq-badge"><i data-lucide="radio" style="width:13px;height:13px;color:var(--pink)"></i> Aluth
+          Kalawak · Tonight</span>
+        <img src="aluth-kalawak-poster.jpg" alt="Aluth Kalawak Poster" class="hero-poster-img"
+          onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'400\'><rect width=\'100%\' height=\'100%\' fill=\'%23161b22\'/><text x=\'50%\' y=\'50%\' fill=\'%238b949e\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\'>Eventara Preview</text></svg>'">
+      </div>
+    </div>
+  </header>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee" id="marquee"></div>
+  </div>
+
+  <!-- CATEGORY FILTER PILLS & FEATURED BENTO -->
+  <section class="section" id="discover">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div>
+          <span class="eyebrow">Featured</span>
+          <h2 style="margin-top:10px">Don't miss these</h2>
+        </div>
+        <div class="pill-row" id="category-pills">
+          <button class="pill active" data-cat="all">All</button>
+          <button class="pill" data-cat="music">Music</button>
+          <button class="pill" data-cat="tech">Tech</button>
+          <button class="pill" data-cat="food">Food</button>
+          <button class="pill" data-cat="art">Art</button>
+          <button class="pill" data-cat="business">Business</button>
+          <button class="pill" data-cat="sports">Sports</button>
+          <button class="pill" data-cat="wedding">Wedding</button>
+        </div>
+      </div>
+      <div class="events-grid-dynamic" id="bento-grid"></div>
+    </div>
+  </section>
+
+  <!-- LIVE NOW (DYNAMIC) -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div>
+          <span class="eyebrow">Happening soon</span>
+          <h2 style="margin-top:10px">Live &amp; trending</h2>
+        </div>
+      </div>
+      <div class="live-scroll-dynamic" id="live-scroll"></div>
+    </div>
+  </section>
+
+  <!-- ALL EVENTS GRID (DYNAMIC) -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div>
+          <span class="eyebrow" id="event-count-label">All events</span>
+          <h2 style="margin-top:10px">Browse everything</h2>
+        </div>
+      </div>
+      <div class="events-grid-dynamic" id="all-events-grid">
+        <div style="color: #8b949e; padding: 40px;">Loading events from database...</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="logo"><span
+              class="bars"><span></span><span></span><span></span><span></span></span>Eventara</a>
+          <p style="color:var(--text-dim);font-size:14px;margin-top:16px;max-width:280px">Sri Lanka's most vibrant event
+            discovery and management platform.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Eventara. All rights reserved.</span>
+        <span>Made with ⚡ in Colombo, Sri Lanka</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    lucide.createIcons();
+    let globalEventsCache = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Session & Navigation Logic
+      const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+      const userRole = sessionStorage.getItem("userRole");
+      const userName = sessionStorage.getItem("userName") || "User";
+
+      const loginBtn = document.getElementById("nav-login-btn");
+      const profileMenu = document.getElementById("user-profile-menu");
+      const navActionBtn = document.getElementById("nav-action-btn");
+
+      if (isLoggedIn === "true") {
+        if (loginBtn) loginBtn.style.display = "none";
+        if (profileMenu) profileMenu.style.display = "inline-block";
+
+        const nameElement = document.getElementById("dropdown-name");
+        if (nameElement) nameElement.innerText = userName;
+
+        const avatarImg = document.getElementById("nav-avatar-img");
+        if (avatarImg) {
+          avatarImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=1f2328&color=fff`;
+        }
+
+        const roleSpan = document.getElementById("dropdown-role");
+        if (roleSpan && userRole) {
+          roleSpan.innerText = userRole.replace('_', ' ');
+        }
+
+        const dashboardLink = document.getElementById("dynamic-dashboard-link");
+        if (dashboardLink && userRole) {
+          if (userRole === "SUPER_ADMIN" || userRole === "ADMIN") {
+            dashboardLink.href = "admin-events.html";
+          } else if (userRole === "ORGANIZER") {
+            dashboardLink.href = "dashboard.html";
+          } else {
+            dashboardLink.href = "user-profile.html";
+          }
+        }
+
+        if (navActionBtn) {
+          if (userRole === "SUPER_ADMIN" || userRole === "ADMIN") {
+            navActionBtn.href = "admin-events.html";
+            navActionBtn.innerHTML = '<i data-lucide="shield" style="width:15px;height:15px"></i> Manage Events';
+          } else if (userRole === "ORGANIZER") {
+            navActionBtn.href = "create-event.html";
+            navActionBtn.innerHTML = '<i data-lucide="plus" style="width:15px;height:15px"></i> Create Event';
+          } else {
+            navActionBtn.href = "#discover";
+            navActionBtn.innerHTML = '<i data-lucide="ticket" style="width:15px;height:15px"></i> Book Tickets';
+          }
+        }
+      } else {
+        if (loginBtn) loginBtn.style.display = "inline-block";
+        if (profileMenu) profileMenu.style.display = "none";
+
+        if (navActionBtn) {
+          navActionBtn.href = "login.html";
+          navActionBtn.innerHTML = '<i data-lucide="plus" style="width:15px;height:15px"></i> Create Event';
+        }
+      }
+
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+
+      const avatarBtn = document.getElementById("avatar-btn");
+      if (avatarBtn) {
+        avatarBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          document.getElementById("dropdown-content").classList.toggle("show");
+        });
+      }
+
+      document.addEventListener("click", (e) => {
+        const dropdown = document.getElementById("dropdown-content");
+        const profileMenuEl = document.getElementById("user-profile-menu");
+        if (dropdown && dropdown.classList.contains("show") && profileMenuEl && !profileMenuEl.contains(e.target)) {
+          dropdown.classList.remove("show");
+        }
+      });
+
+      const logoutBtn = document.getElementById("logout-btn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          sessionStorage.clear();
+          window.location.reload();
+        });
+      }
+
+      // 2. Fetch and Setup Event Filtering
+      fetchAndSetupEvents();
+    });
+
+    // Helper to generate consistent card HTML mapping database fields safely
+    function createEventCardHTML(ev, minWidth = '280px') {
+      const imgSrc = ev.imagePath ? `sources/${ev.imagePath}` : 'aluth-kalawak-poster.jpg';
+      const displayTicketInfo = ev.ticketInfo ? ev.ticketInfo : 'General: LKR 2,000';
+
+      return `
+        <div style="background: #161b22; border: 1px solid #30363d; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; min-width: ${minWidth}; max-width: 100%;">
+          <div style="height: 180px; background: #21262d; position: relative;">
+            <span style="position: absolute; top: 12px; left: 12px; font-size: 10px; background: rgba(56,189,248,0.1); color: #38bdf8; padding: 4px 8px; border-radius: 10px; font-weight: 700; text-transform: uppercase;">
+              ${ev.category || 'General'}
+            </span>
+            <img src="${imgSrc}" alt="${ev.title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='aluth-kalawak-poster.jpg'">
+          </div>
+          <div style="padding: 16px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <h3 style="margin: 0 0 6px 0; font-size: 18px; color: #fff;">${ev.title}</h3>
+              <p style="margin: 0; font-size: 12px; color: #8b949e;">📅 ${ev.eventDate || 'TBA'} · 📍 ${ev.venue || 'TBA'}</p>
+            </div>
+            <div style="margin-top: 14px; background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 10px;">
+              <div style="font-size: 10px; color: #f43f5e; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Tickets</div>
+              <div style="font-size: 12px; color: #fff; font-weight: 600;">${displayTicketInfo}</div>
+            </div>
+            <div style="margin-top: 14px;">
+              <a href="event-details.html?id=${ev.id}" class="btn btn-primary" style="display: block; text-align: center; background: linear-gradient(90deg, #9333ea, #db2777); color: #fff; text-decoration: none; border-radius: 8px; padding: 10px; font-weight: 600; font-size: 14px;">
+                Get Tickets
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function fetchAndSetupEvents() {
+      try {
+        const res = await fetch('/api/events');
+        const events = res.ok ? await res.json() : [];
+
+        const approvedEvents = events.filter(e => e.status === 'APPROVED');
+        globalEventsCache = approvedEvents;
+
+        // Update Hero Stats (Live Events Count)
+        const liveEventStat = document.getElementById("stat-events");
+        if (liveEventStat) liveEventStat.innerText = approvedEvents.length;
+
+        // Render initial view (All categories)
+        renderFilteredEvents('all');
+
+        // Setup Pill Click Listeners for Filtering
+        const pillButtons = document.querySelectorAll("#category-pills .pill");
+        pillButtons.forEach(btn => {
+          btn.addEventListener("click", () => {
+            pillButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            const selectedCat = btn.getAttribute("data-cat");
+            renderFilteredEvents(selectedCat);
+          });
+        });
+
+      } catch (err) {
+        console.error("Failed to load events", err);
+      }
+    }
+
+    function renderFilteredEvents(category) {
+      // Filter based on selected category pill
+      const filteredEvents = category === 'all'
+        ? globalEventsCache
+        : globalEventsCache.filter(e => e.category && e.category.toLowerCase() === category.toLowerCase());
+
+      const filteredTrending = filteredEvents.filter(e => e.trending === true);
+
+      // 1. Populate "Featured" Bento Grid
+      const bentoContainer = document.getElementById("bento-grid");
+      if (bentoContainer) {
+        if (filteredEvents.length > 0) {
+          bentoContainer.innerHTML = filteredEvents.slice(0, 4).map(ev => createEventCardHTML(ev)).join('');
+        } else {
+          bentoContainer.innerHTML = '<div style="color: #8b949e; grid-column: 1/-1; padding: 20px;">No featured events found in this category.</div>';
+        }
+      }
+
+      // 2. Populate "Live & Trending" Grid
+      const liveContainer = document.getElementById("live-scroll");
+      if (liveContainer) {
+        if (filteredTrending.length > 0) {
+          liveContainer.innerHTML = filteredTrending.map(ev => createEventCardHTML(ev, '320px')).join('');
+        } else {
+          liveContainer.innerHTML = '<div style="color: #8b949e; padding: 0 20px;">No trending events found in this category.</div>';
+        }
+      }
+
+      // 3. Populate "Browse Everything" Grid
+      const allContainer = document.getElementById("all-events-grid");
+      const countEl = document.getElementById("event-count-label");
+      if (countEl) countEl.innerText = `${filteredEvents.length} EVENTS FOUND`;
+
+      if (allContainer) {
+        if (filteredEvents.length === 0) {
+          allContainer.innerHTML = '<div style="color: #8b949e; grid-column: 1/-1; padding: 40px;">No events found matching this category.</div>';
+        } else {
+          allContainer.innerHTML = filteredEvents.map(ev => createEventCardHTML(ev)).join('');
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

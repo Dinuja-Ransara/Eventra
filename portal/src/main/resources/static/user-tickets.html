@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tickets — Eventara</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="dash-shell">
+        <aside class="dash-sidebar">
+            <a href="index.html" class="logo"><span
+                    class="bars"><span></span><span></span><span></span><span></span></span>Eventara</a>
+            <nav class="dash-nav">
+                <a href="user-tickets.html" class="active"><i data-lucide="ticket" style="width:17px;height:17px"></i>
+                    My Tickets</a>
+                <a href="index.html"><i data-lucide="compass" style="width:17px;height:17px"></i> Discover Events</a>
+                <a href="user-saved.html"><i data-lucide="heart" style="width:17px;height:17px"></i> Saved Events</a>
+                <span class="section-label">Account</span>
+                <a href="user-profile.html"><i data-lucide="settings" style="width:17px;height:17px"></i> Profile
+                    Settings</a>
+                <a href="index.html" id="logout-link"><i data-lucide="log-out" style="width:17px;height:17px"></i> Sign
+                    out</a>
+            </nav>
+        </aside>
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div>
+                    <h1>My Booked Tickets 🎟️</h1>
+                    <p style="color:var(--text-dim);font-size:14px;margin-top:4px">Access your entry passes and QR codes
+                        for upcoming events.</p>
+                </div>
+            </div>
+            <div class="glass panel" style="width:100%; margin-top:20px;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Event Title</th>
+                            <th>Date</th>
+                            <th>Venue</th>
+                            <th>Ticket Code</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Aluth Kalawak — New Year Music Fest</td>
+                            <td>Apr 13, 2026</td>
+                            <td>Colombo</td>
+                            <td><b>EVT-8921-LK</b></td>
+                            <td><button class="btn btn-primary btn-sm"
+                                    onclick="alert('Displaying entry QR Code pass...')">View QR Code</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

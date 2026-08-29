@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventara — Sign up</title>
+    <meta name="description" content="Create an account to start discovering and hosting events on Eventara.">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body.auth-body {
+            background-color: #0d1117;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .auth-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .auth-brand-panel {
+            flex: 1;
+            background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid #30363d;
+        }
+
+        .auth-brand-content {
+            max-width: 480px;
+        }
+
+        .auth-brand-content h1 {
+            font-size: 36px;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .auth-brand-content p {
+            color: #8b949e;
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+
+        .auth-form-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background-color: #0d1117;
+            overflow-y: auto;
+        }
+
+        .auth-form-wrap {
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .auth-header {
+            margin-bottom: 20px;
+        }
+
+        .auth-header h2 {
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            color: #fff;
+        }
+
+        .auth-header p {
+            color: #8b949e;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .role-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background: #161b22;
+            border: 1px solid #30363d;
+            color: white;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            border-color: #58a6ff;
+            background: #1f2328;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 14px;
+            width: 100%;
+        }
+
+        .form-group label {
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #c9d1d9;
+            font-weight: 500;
+        }
+
+        .input-icon-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .input-icon-wrap i {
+            position: absolute;
+            left: 14px;
+            color: #8b949e;
+            pointer-events: none;
+        }
+
+        .input-icon-wrap input {
+            width: 100%;
+            padding: 11px 12px 11px 42px;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-icon-wrap input:focus {
+            border-color: #58a6ff;
+        }
+
+        .btn-primary-custom {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #9333ea, #db2777);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .btn-primary-custom:hover {
+            opacity: 0.9;
+        }
+
+        .auth-switch-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #8b949e;
+        }
+    </style>
+</head>
+
+<body class="auth-body">
+
+    <div class="auth-container">
+        <!-- Left Promotional Panel -->
+        <div class="auth-brand-panel">
+            <div class="auth-brand-content">
+                <a href="index.html" class="logo"
+                    style="color:white; text-decoration:none; font-weight:bold; font-size:18px; margin-bottom: 24px; display: inline-flex; align-items:center; gap:8px;">
+                    <span class="bars"><span></span><span></span><span></span><span></span></span>Eventara
+                </a>
+                <h1>Build experiences that matter.</h1>
+                <p>Join Eventara today to host events, manage real-time tickets, and connect with your community
+                    seamlessly.</p>
+                <div style="font-size:13px; color:#8b949e;">Built for creators in Sri Lanka</div>
+            </div>
+        </div>
+
+        <!-- Right Form Panel -->
+        <div class="auth-form-panel">
+            <div class="auth-form-wrap">
+                <div class="auth-header">
+                    <h2>Create an account</h2>
+                    <p>Get started with Eventara in seconds.</p>
+                </div>
+
+                <!-- Role Select Tabs -->
+                <div class="role-tabs">
+                    <button type="button" id="tab-user-btn" class="tab-btn active"
+                        onclick="switchRole('USER')">Attendee</button>
+                    <button type="button" id="tab-org-btn" class="tab-btn"
+                        onclick="switchRole('ORGANIZER')">Organizer</button>
+                </div>
+
+                <form id="register-form">
+                    <input type="hidden" id="selected-role" value="USER">
+
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <div class="input-icon-wrap">
+                            <i data-lucide="user" style="width:16px;height:16px"></i>
+                            <input type="text" id="reg-name" placeholder="Dinuja Ransara" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email address</label>
+                        <div class="input-icon-wrap">
+                            <i data-lucide="mail" style="width:16px;height:16px"></i>
+                            <input type="email" id="reg-email" placeholder="you@example.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div class="input-icon-wrap">
+                            <i data-lucide="lock" style="width:16px;height:16px"></i>
+                            <input type="password" id="reg-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <!-- Organizer Extra Fields (Initially Hidden) -->
+                    <div id="organizer-extra-fields" style="display: none;">
+                        <div class="form-group">
+                            <label>Organization / Club Name</label>
+                            <div class="input-icon-wrap">
+                                <i data-lucide="building" style="width:16px;height:16px"></i>
+                                <input type="text" id="reg-org-name" placeholder="NFORCE Club / Tech Corp">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <div class="input-icon-wrap">
+                                <i data-lucide="phone" style="width:16px;height:16px"></i>
+                                <input type="text" id="reg-phone" placeholder="+94 77 123 4567">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="btn-primary-custom">
+                        <i data-lucide="user-plus" style="width:16px;height:16px"></i> Sign up
+                    </button>
+                </form>
+
+                <p class="auth-switch-text">
+                    Already have an account? <a href="login.html" style="color: #58a6ff; text-decoration: none;">Log
+                        in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function switchRole(role) {
+            document.getElementById("selected-role").value = role;
+            const extraFields = document.getElementById("organizer-extra-fields");
+            const userBtn = document.getElementById("tab-user-btn");
+            const orgBtn = document.getElementById("tab-org-btn");
+
+            if (role === "ORGANIZER") {
+                extraFields.style.display = "block";
+                orgBtn.classList.add("active");
+                userBtn.classList.remove("active");
+            } else {
+                extraFields.style.display = "none";
+                userBtn.classList.add("active");
+                orgBtn.classList.remove("active");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const registerForm = document.getElementById("register-form");
+
+            if (registerForm) {
+                registerForm.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const btn = document.getElementById("submit-btn");
+
+                    const nameInput = document.getElementById("reg-name").value;
+                    const emailInput = document.getElementById("reg-email").value;
+                    const passwordInput = document.getElementById("reg-password").value;
+                    const roleInput = document.getElementById("selected-role").value;
+                    const orgNameInput = document.getElementById("reg-org-name").value;
+                    const phoneInput = document.getElementById("reg-phone").value;
+
+                    btn.innerHTML = 'Creating account...';
+
+                    try {
+                        const response = await fetch("/api/auth/register", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                name: nameInput,
+                                email: emailInput,
+                                password: passwordInput,
+                                role: roleInput,
+                                organizationName: orgNameInput,
+                                phone: phoneInput
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok && (data.success !== false)) {
+                            alert("Registration successful! Please log in.");
+                            window.location.href = "login.html";
+                        } else {
+                            alert("Registration failed: " + (data.message || "Please check your details."));
+                            btn.innerHTML = '<i data-lucide="user-plus" style="width:16px;height:16px"></i> Sign up';
+                            lucide.createIcons();
+                        }
+                    } catch (error) {
+                        console.error("Connection error:", error);
+                        alert("Could not connect to the backend server.");
+                        btn.innerHTML = '<i data-lucide="user-plus" style="width:16px;height:16px"></i> Sign up';
+                        lucide.createIcons();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

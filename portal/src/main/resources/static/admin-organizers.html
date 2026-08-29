@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Organizers — Eventara Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="dash-shell">
+        <aside class="dash-sidebar">
+            <a href="index.html" class="logo"><span
+                    class="bars"><span></span><span></span><span></span><span></span></span>Eventara Admin</a>
+            <nav class="dash-nav">
+                <a href="admin-dashboard.html"><i data-lucide="shield-check" style="width:17px;height:17px"></i>
+                    Overview</a>
+                <a href="admin-organizers.html" class="active"><i data-lucide="users"
+                        style="width:17px;height:17px"></i> Manage Organizers</a>
+                <a href="admin-reports.html"><i data-lucide="file-text" style="width:17px;height:17px"></i> System
+                    Reports</a>
+                <a href="admin-events.html"><i data-lucide="calendar" style="width:17px;height:17px"></i> All Events</a>
+                <span class="section-label">Platform Control</span>
+                <a href="admin-settings.html"><i data-lucide="settings" style="width:17px;height:17px"></i> Settings</a>
+                <a href="index.html"><i data-lucide="log-out" style="width:17px;height:17px"></i> Exit dashboard</a>
+            </nav>
+        </aside>
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div>
+                    <h1>Manage Organizers 👥</h1>
+                    <p style="color:var(--text-dim);font-size:14px;margin-top:4px">Review, verify, or suspend platform
+                        event hosts.</p>
+                </div>
+            </div>
+            <div class="glass panel" style="width:100%; margin-top:20px;">
+                <div class="panel-head">
+                    <h3>All Registered Organizers</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Organization</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Dinuja Ransara</td>
+                            <td>org@eventara.com</td>
+                            <td>NFORCE Club</td>
+                            <td>+94 77 000 0000</td>
+                            <td><span style="color:var(--lime);font-weight:600">VERIFIED</span></td>
+                            <td><button class="btn btn-ghost btn-sm" style="color:var(--pink)">Suspend</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

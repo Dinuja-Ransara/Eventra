@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Reports — Eventara Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="dash-shell">
+        <aside class="dash-sidebar">
+            <a href="index.html" class="logo"><span
+                    class="bars"><span></span><span></span><span></span><span></span></span>Eventara Admin</a>
+            <nav class="dash-nav">
+                <a href="admin-dashboard.html"><i data-lucide="shield-check" style="width:17px;height:17px"></i>
+                    Overview</a>
+                <a href="admin-organizers.html"><i data-lucide="users" style="width:17px;height:17px"></i> Manage
+                    Organizers</a>
+                <a href="admin-reports.html" class="active"><i data-lucide="file-text"
+                        style="width:17px;height:17px"></i> System Reports</a>
+                <a href="admin-events.html"><i data-lucide="calendar" style="width:17px;height:17px"></i> All Events</a>
+                <span class="section-label">Platform Control</span>
+                <a href="admin-settings.html"><i data-lucide="settings" style="width:17px;height:17px"></i> Settings</a>
+                <a href="index.html"><i data-lucide="log-out" style="width:17px;height:17px"></i> Exit dashboard</a>
+            </nav>
+        </aside>
+        <main class="dash-main">
+            <div class="dash-topbar">
+                <div>
+                    <h1>System Reports 📊</h1>
+                    <p style="color:var(--text-dim);font-size:14px;margin-top:4px">Download and analyze global financial
+                        and user logs.</p>
+                </div>
+            </div>
+            <div class="stat-grid" style="margin-top:20px;">
+                <div class="glass stat-card">
+                    <div class="val">Rs. 2,450,000</div>
+                    <div class="label">Total Revenue Generated</div>
+                </div>
+                <div class="glass stat-card">
+                    <div class="val">1,245</div>
+                    <div class="label">Total Tickets Sold This Month</div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>
